@@ -19,6 +19,7 @@ class DescriptionTextInputWidget extends StatelessWidget {
       label: 'Descrição',
       minLines: 4,
       maxLines: 6,
+      textCapitalization: TextCapitalization.sentences,
     );
   }
 }
