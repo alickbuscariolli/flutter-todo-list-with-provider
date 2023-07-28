@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       child: MaterialApp(
         title: 'Lista de Tarefas - Flutter Dicas',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
