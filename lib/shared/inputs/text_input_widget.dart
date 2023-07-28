@@ -5,6 +5,8 @@ class TextInputWidget extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final String label;
+  final bool autofocus;
+  final TextCapitalization textCapitalization;
   final String? Function(String?)? validator;
   final void Function(String)? onFieldSubmitted;
   final int? maxLines;
@@ -16,6 +18,8 @@ class TextInputWidget extends StatelessWidget {
     required this.controller,
     required this.focusNode,
     required this.label,
+    this.autofocus = false,
+    this.textCapitalization = TextCapitalization.none,
     this.validator,
     this.onFieldSubmitted,
     super.key,
@@ -30,7 +34,7 @@ class TextInputWidget extends StatelessWidget {
     return TextFormField(
       controller: controller,
       focusNode: focusNode,
-      autofocus: true,
+      autofocus: autofocus,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         label: TextWidget(label),
@@ -38,7 +42,7 @@ class TextInputWidget extends StatelessWidget {
         labelStyle: const TextStyle(color: Colors.white),
         floatingLabelStyle: const TextStyle(color: Colors.white),
       ),
-      textCapitalization: TextCapitalization.words,
+      textCapitalization: textCapitalization,
       validator: validator,
       onFieldSubmitted: onFieldSubmitted,
       minLines: minLines,

@@ -18,6 +18,8 @@ class TitleTextInputWidget extends StatelessWidget {
       controller: titleTEC,
       focusNode: titleFN,
       label: 'Título',
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
       onFieldSubmitted: (_) => descriptionFN.requestFocus(),
       validator: (String? newTitle) {
         if (newTitle == null || newTitle.isEmpty) {
