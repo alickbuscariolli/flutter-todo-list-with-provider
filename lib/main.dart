@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list_provider/features/todos/controllers/todos_controller.dart';
 import 'package:todo_list_provider/features/todos/screens/todos_screen.dart';
@@ -35,6 +36,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: const TodosScreen(),
+        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+        supportedLocales: const [Locale('pt', 'BR')],
       ),
     );
   }
