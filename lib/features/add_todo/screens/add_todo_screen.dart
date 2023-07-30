@@ -4,6 +4,7 @@ import 'package:todo_list_provider/features/add_todo/widgets/date_text_input_wid
 import 'package:todo_list_provider/features/add_todo/widgets/description_text_input_widget.dart';
 import 'package:todo_list_provider/features/add_todo/widgets/title_text_input_widget.dart';
 import 'package:todo_list_provider/features/todos/controllers/todos_controller.dart';
+import 'package:todo_list_provider/shared/mixins/snack_bar_mixin.dart';
 import 'package:todo_list_provider/shared/models/todo_model.dart';
 import 'package:todo_list_provider/shared/texts/text_widget.dart';
 
@@ -14,7 +15,7 @@ class AddTodoScreen extends StatefulWidget {
   State<AddTodoScreen> createState() => _AddTodoScreenState();
 }
 
-class _AddTodoScreenState extends State<AddTodoScreen> {
+class _AddTodoScreenState extends State<AddTodoScreen> with SnackBarMixin {
   final _formKey = GlobalKey<FormState>();
 
   final _titleTEC = TextEditingController();
@@ -40,17 +41,24 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     super.dispose();
   }
 
-  void _addTodo() {
+  Future<void> _addTodo() async {
     if (_formKey.currentState!.validate()) {
       final todoCtrl = Provider.of<TodosController>(context, listen: false);
-      todoCtrl.addTodo(
+      final String? error = await todoCtrl.addTodo(
         TodoModel(
           title: _titleTEC.text,
           description: _descriptionTEC.text,
           cDate: todoDate,
         ),
       );
-      Navigator.of(context).pop();
+
+      if (context.mounted) {
+        if (error != null) {
+          showSnackBar(error, context: context, isError: true);
+        } else {
+          Navigator.of(context).pop();
+        }
+      }
     }
   }
 

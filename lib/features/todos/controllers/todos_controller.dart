@@ -28,6 +28,11 @@ class TodosController extends ChangeNotifier {
     return null;
   }
 
+  void sortTodosByDate() {
+    todos.sort((todoA, todoB) => todoA.date.compareTo(todoB.date));
+    notifyListeners();
+  }
+
   Future<String?> loadDoneTodos() async {
     final (String? error, List<String>? loadedDoneTodos) =
         await _todosLocalStorage.getDoneTodos();
@@ -43,10 +48,15 @@ class TodosController extends ChangeNotifier {
     return null;
   }
 
-  Future<void> addTodo(TodoModel todo) async {
+  Future<String?> addTodo(TodoModel todo) async {
     todos.add(todo);
-    await saveTodos();
-    sortTodosByDate();
+    final String? error = await saveTodos();
+
+    if (error == null) {
+      sortTodosByDate();
+    }
+
+    return error;
   }
 
   Future<String?> saveTodos() async {
@@ -57,20 +67,19 @@ class TodosController extends ChangeNotifier {
     return doneTodos.indexWhere((checkedTodoId) => checkedTodoId == id) != -1;
   }
 
-  void checkTodo(String id) async {
-    if (!isTodoChecked(id)) {
-      doneTodos.add(id);
-    } else {
-      doneTodos.removeWhere((checkedTodoId) => checkedTodoId == id);
+  Future<String?> checkTodo(String id) async {
+    final String? error = await _todosLocalStorage.setDoneTodos(doneTodos);
+
+    if (error == null) {
+      if (!isTodoChecked(id)) {
+        doneTodos.add(id);
+      } else {
+        doneTodos.removeWhere((checkedTodoId) => checkedTodoId == id);
+      }
+
+      notifyListeners();
     }
 
-    await _todosLocalStorage.setDoneTodos(doneTodos);
-
-    notifyListeners();
-  }
-
-  void sortTodosByDate() {
-    todos.sort((todoA, todoB) => todoA.date.compareTo(todoB.date));
-    notifyListeners();
+    return error;
   }
 }
