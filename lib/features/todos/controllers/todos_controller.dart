@@ -15,17 +15,15 @@ class TodosController extends ChangeNotifier {
     final (String? error, List<TodoModel>? loadedTodos) =
         await _todosLocalStorage.getTodos();
 
-    if (error != null) {
-      return error;
+    if (error == null) {
+      todos
+        ..clear()
+        ..addAll(loadedTodos!);
+
+      sortTodosByDate();
     }
 
-    todos
-      ..clear()
-      ..addAll(loadedTodos!);
-
-    sortTodosByDate();
-
-    return null;
+    return error;
   }
 
   void sortTodosByDate() {
