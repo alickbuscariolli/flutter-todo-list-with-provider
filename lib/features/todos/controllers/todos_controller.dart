@@ -35,15 +35,13 @@ class TodosController extends ChangeNotifier {
     final (String? error, List<String>? loadedDoneTodos) =
         await _todosLocalStorage.getDoneTodos();
 
-    if (error != null) {
-      return error;
+    if (error == null) {
+      doneTodos
+        ..clear()
+        ..addAll(loadedDoneTodos!);
     }
 
-    doneTodos
-      ..clear()
-      ..addAll(loadedDoneTodos!);
-
-    return null;
+    return error;
   }
 
   Future<String?> addTodo(TodoModel todo) async {
@@ -66,10 +64,16 @@ class TodosController extends ChangeNotifier {
   }
 
   Future<String?> checkTodo(String id) async {
+    if (!isTodoChecked(id)) {
+      doneTodos.add(id);
+    } else {
+      doneTodos.removeWhere((checkedTodoId) => checkedTodoId == id);
+    }
+
     final String? error = await _todosLocalStorage.setDoneTodos(doneTodos);
 
     if (error == null) {
-      if (!isTodoChecked(id)) {
+      if (isTodoChecked(id)) {
         doneTodos.add(id);
       } else {
         doneTodos.removeWhere((checkedTodoId) => checkedTodoId == id);
