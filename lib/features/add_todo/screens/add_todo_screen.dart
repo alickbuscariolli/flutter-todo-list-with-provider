@@ -65,11 +65,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> with SnackBarMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const TextWidget('Adicionar Tarefa'),
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
         child: Padding(
